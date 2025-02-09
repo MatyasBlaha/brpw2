@@ -2,6 +2,8 @@ import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing'
+import {Provider} from "@/components/ui/provider";
+
 export default async function LocaleLayout({
                                                children,
                                                params: {locale}
@@ -19,10 +21,12 @@ export default async function LocaleLayout({
     const messages = await getMessages();
 
     return (
-        <html lang={locale}>
+        <html lang={locale} suppressHydrationWarning>
         <body>
         <NextIntlClientProvider messages={messages}>
-            {children}
+            <Provider>
+                    {children}
+            </Provider>
         </NextIntlClientProvider>
         </body>
         </html>
