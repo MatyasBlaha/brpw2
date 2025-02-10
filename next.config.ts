@@ -4,6 +4,7 @@
 import * as path from "path";
 
 import createNextIntlPlugin from "next-intl/plugin";
+import * as process from "process";
 
 const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
@@ -20,6 +21,9 @@ const nextConfig = {
     experimental: {
         optimizePackageImports: ["@chakra-ui/react"],
     },
+    env: {
+        JWT_SECRET:process.env.JWT_SECRET
+    }
 }
 
 export default withNextIntl(nextConfig)
