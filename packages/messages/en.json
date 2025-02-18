@@ -1,5 +1,26 @@
 {
-  "HomePage": {
-    "title": "Home page"
+  "homePage": {
+    "title": "Home page",
+    "language": {
+      "english": "english",
+      "czech": "czech"
+    }
+  },
+  "navbar": {
+    "links": {
+      "profile": "Profile",
+      "settings": "settings"
+    }
+  },
+  "settings": {
+    "title": "Settings"
+  },
+  "forms": {
+    "addOwner": {
+      "fields": {
+        "name": "name",
+        "description": "description"
+      }
+    }
   }
 }

@@ -1,39 +1,85 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
-import {useParams, useRouter} from "next/navigation";
-import {Link} from "@chakra-ui/react";
+import { useParams } from "next/navigation";
+import { Box, Button, Flex, Link, MenuContent, MenuItem, MenuRoot, MenuTrigger, Skeleton } from "@chakra-ui/react";
+import { useColorMode } from "@/components/ui/color-mode";
+import { Switch } from "@/components/ui/switch";
+import { CgProfile } from "react-icons/cg";
+import {useTranslations} from "next-intl";
 
 export default function Navbar() {
-    const { user } = useAuth();
-    const router = useRouter();
-    const {locale} = useParams()
+    const { user, loading } = useAuth();
+    const { locale } = useParams();
+    const { toggleColorMode } = useColorMode();
+    const t = useTranslations("navbar")
 
-    const handleLogout = async () => {
-        await fetch("/api/auth/logout", { method: "POST" });
-        router.push(`/${locale}/login`);
-    };
+    console.log(loading); // Debugging
 
     return (
-        <nav className="p-4 bg-gray-800 text-white">
-            <div className="flex justify-between">
-                <span>MyApp</span>
-                <div>
-                    {user ? (
-                        <>
-                            <span className="mr-4">{user.email}</span>
-                            <button onClick={handleLogout} className="bg-red-500 px-3 py-1 rounded">
-                                Logout
-                            </button>
-                        </>
+        <Box bg="bg.muted">
+            <Flex
+                as="nav"
+                align="center"
+                justify="space-between"
+                wrap="wrap"
+                w="100%"
+                p={8}
+                bg={["primary.500", "primary.500", "transparent", "transparent"]}
+                color="fg.highContrast"
+            >
+                <Box>
+                    {loading ? (
+                        <Skeleton height="40px" width="100px" />
                     ) : (
-                        <>
-                            <Link href={`/${locale}/login`} className="mr-4">Login</Link>
-                            <Link href={`/${locale}/register`} className="mr-4">Register</Link>
-                        </>
+                        <Link href={`/${locale}`} fontSize="xl">
+                            MyAPP
+                        </Link>
+                    )}
+                </Box>
+
+                <Switch onCheckedChange={() => toggleColorMode()} pr={4} />
+
+                <div>
+                    {loading ? (
+                        <Flex gap={4}>
+                            <Skeleton height="40px" width="100px" />
+                            <Skeleton height="40px" width="40px" borderRadius="full" />
+                        </Flex>
+                    ) : user ? (
+                        <Flex>
+                            <Box>
+                                <Link href={`/${locale}/app`} className="mr-4">
+                                    <Button>můj účet</Button>
+                                </Link>
+                                <MenuRoot>
+                                    <MenuTrigger asChild>
+                                        <Button variant="ghost">
+                                            <CgProfile />
+                                        </Button>
+                                    </MenuTrigger>
+                                    <MenuContent position="absolute">
+                                        <MenuItem value="profile">
+                                            <Link href={`/${locale}/app/profile`}>
+                                                {t("links.profile")}
+                                            </Link>
+                                        </MenuItem>
+                                        <MenuItem value="settings">
+                                            <Link href={`/${locale}/app/settings`}>
+                                                {t("links.settings")}
+                                            </Link>
+                                        </MenuItem>
+                                    </MenuContent>
+                                </MenuRoot>
+                            </Box>
+                        </Flex>
+                    ) : (
+                        <Link href={`/${locale}/login`} className="mr-4">
+                            Login
+                        </Link>
                     )}
                 </div>
-            </div>
-        </nav>
+            </Flex>
+        </Box>
     );
 }

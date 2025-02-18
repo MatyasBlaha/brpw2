@@ -1,19 +1,42 @@
 'use client'
 
 import React from 'react';
-import {Button, Heading} from "@chakra-ui/react";
+import {useForm, SubmitHandler} from 'react-hook-form';
+import {addOwner} from "@/types/owner/addOwner";
+import {Heading, Input} from "@chakra-ui/react";
+import {useTranslations} from "next-intl";
+import {Field} from "@/components/ui/field";
 import BackButton from "@/components/ui/BackButton";
 
-function Page(props) {
+const page = () => {
+    const {register, handleSubmit, formState: {isSubmitting}} = useForm<addOwner>()
+    const t = useTranslations("forms.addOwner")
+
 
     return (
-        <div>
-            <BackButton>Go Back</BackButton>
+        <>
+            <BackButton>
+                Back
+            </BackButton>
             <Heading>
-                Create new owner
+                heading
             </Heading>
-        </div>
+            <form>
+                <Field label={t("fields.name")} required>
+                    <Input
+                        {...register('name', {required: true})}
+                        type="text"
+                    />
+                </Field>
+                <Field label={t("fields.description")}>
+                    <Input
+                        {...register('description', {required: false})}
+                        type="text"
+                    />
+                </Field>
+            </form>
+        </>
     );
-}
+};
 
-export default Page;
+export default page;

@@ -3,6 +3,7 @@
 import { useAuth } from "@/hooks/useAuth";
 import {useParams, useRouter} from "next/navigation";
 import { useEffect } from "react";
+import {Box} from "@chakra-ui/react";
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
     const { user, loading } = useAuth();
@@ -18,5 +19,9 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
     if (loading) return <p>Loading...</p>;
 
-    return <>{children}</>;
+    return (
+        <Box maxWidth="80%" margin="auto">
+            {children}
+        </Box>
+    );
 }
