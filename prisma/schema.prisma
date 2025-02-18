@@ -29,12 +29,13 @@ model Session {
   expiresAt DateTime
 }
 
-model Owner = {
+model Owner {
   id            String   @id @default(uuid())
   author        User @relation(fields: [authorId], references: [id])
   authorId      String
   name          String
   description   String
+  employees     Employee[]
 }
 
 model Employee {
