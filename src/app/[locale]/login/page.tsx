@@ -2,31 +2,85 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from 'react-hook-form';
 
-export default function LoginPage({ params: { locale } }: { params: { locale: string } }) {
+type FormData = {
+    email: string;
+    password: string;
+};
+
+export default function AuthForm({ params: { locale } }: { params: { locale: string } }) {
     const router = useRouter();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [isLogin, setIsLogin] = useState(true);
+    const { register, handleSubmit, formState: { isSubmitting } } = useForm<FormData>();
 
-    const handleLogin = async () => {
-        const res = await fetch('/api/auth/login', {
-            method: 'POST',
-            body: JSON.stringify({ email, password }),
-            headers: { 'Content-Type': 'application/json' },
-        });
+    const toggleAuthMode = () => setIsLogin(!isLogin);
 
-        if (res.ok) {
-            document.cookie = `token=${(await res.json()).token}; path=/`;
-            router.push(`/${locale}/app`);
+    const onSubmit: SubmitHandler<FormData> = async (data) => {
+        const endpoint = isLogin ? 'login' : 'register';
+
+        try {
+            const res = await fetch(`/api/auth/${endpoint}`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            if (res.ok) {
+                const { token } = await res.json();
+                document.cookie = `token=${token}; path=/`;
+                router.push(`/${locale}/app`);
+            }
+        } catch (error) {
+            console.error('Authentication failed:', error);
         }
     };
 
     return (
-        <div>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-            <button onClick={handleLogin}>Login</button>
+        <div className="auth-container">
+            <h1>{isLogin ? 'Login' : 'Register'}</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="form-group">
+                    <input
+                        {...register('email', { required: true })}
+                        type="email"
+                        placeholder="Email"
+                        autoComplete="email"
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        {...register('password', { required: true })}
+                        type="password"
+                        placeholder="Password"
+                        autoComplete="current-password"
+                    />
+                </div>
+                <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="submit-button"
+                >
+                    {isLogin ? (isSubmitting ? 'Logging in...' : 'Login') : (isSubmitting ? 'Registering...' : 'Register')}
+                </button>
+            </form>
+            <div className="auth-toggle">
+                {isLogin ? (
+                    <>
+                        Don't have an account?{' '}
+                        <button type="button" onClick={toggleAuthMode}>
+                            Register
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        Already have an account?{' '}
+                        <button type="button" onClick={toggleAuthMode}>
+                            Login
+                        </button>
+                    </>
+                )}
+            </div>
         </div>
     );
 }

@@ -2,9 +2,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Provider } from "@/components/ui/provider";
-import { LocaleProvider } from "@/context/LocaleContext";
-import Navbar from "@/components/navbar/Navbar";
+import ClientProviders from "@/components/ClientProviders";
 
 export default async function LocaleLayout({
                                                children,
@@ -13,7 +11,8 @@ export default async function LocaleLayout({
     children: React.ReactNode;
     params: { locale: string };
 }) {
-    const { locale } = await params
+    const { locale } = params;
+
     if (!routing.locales.includes(locale)) {
         notFound();
     }
@@ -24,12 +23,9 @@ export default async function LocaleLayout({
         <html lang={locale} suppressHydrationWarning>
         <body>
         <NextIntlClientProvider messages={messages}>
-            <Provider>
-                <LocaleProvider>
-                    <Navbar />
-                    {children}
-                </LocaleProvider>
-            </Provider>
+            <ClientProviders>
+                {children}
+            </ClientProviders>
         </NextIntlClientProvider>
         </body>
         </html>

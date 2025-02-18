@@ -1,5 +1,26 @@
 {
-  "HomePage": {
-    "title": "domovksa stranka"
+  "homePage": {
+    "title": "domovksa stranka",
+    "language": {
+      "english": "anglicky",
+      "czech": "česky"
+    }
+  },
+  "navbar": {
+    "links": {
+      "profile": "Profil",
+      "settings": "nastavení"
+    }
+  },
+  "settings": {
+    "title": "Nastavení"
+  },
+  "forms": {
+    "addOwner": {
+      "fields": {
+        "name": "název",
+        "description": "popis"
+      }
+    }
   }
 }

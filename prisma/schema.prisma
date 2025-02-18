@@ -19,6 +19,7 @@ model User {
   password  String
   createdAt DateTime @default(now())
   Session   Session?
+  owner     Owner[]
 }
 
 model Session {
@@ -26,4 +27,22 @@ model Session {
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
   expiresAt DateTime
+}
+
+model Owner {
+  id            String   @id @default(uuid())
+  author        User @relation(fields: [authorId], references: [id])
+  authorId      String
+  name          String
+  description   String
+  employees     Employee[]
+}
+
+model Employee {
+    id          String   @id @default(uuid())
+    firstName   String
+    lastName    String
+    email       String   @unique
+    owner       Owner   @relation(fields: [ownerId], references: [id])
+    ownerId     String
 }

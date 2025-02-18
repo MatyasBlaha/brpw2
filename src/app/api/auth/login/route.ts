@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import bcrypt from "bcrypt";
-import { sign } from 'jsonwebtoken';
 import prisma from '@/lib/prisma/prisma';
 import jwt from 'jsonwebtoken'
 import { serialize } from 'cookie';
@@ -27,7 +26,7 @@ export async function POST(req: Request) {
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         path: "/",
-        maxAge: 60 * 60, // 1 hour
+        maxAge: 60 * 60 * 60,
     });
 
     return new Response(JSON.stringify({ message: "Login successful" }), {
