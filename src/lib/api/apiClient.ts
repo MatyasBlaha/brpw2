@@ -5,9 +5,11 @@ export async function apiRequest<T>(url: string, method: "GET" | "POST" | "PUT" 
         ...(body ? { body: JSON.stringify(body) } : {}),
     });
 
+    const data = await res.json();
+
     if (!res.ok) {
-        throw new Error(`API request failed: ${res.statusText}`);
+        throw new Error(data.message || `API request failed: ${res.statusText}`);
     }
 
-    return res.json();
+    return data;
 }

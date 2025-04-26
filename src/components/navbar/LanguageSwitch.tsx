@@ -17,10 +17,10 @@ function LanguageSwitch(props) {
                     </Button>
                 </MenuTrigger>
                 <MenuContent>
-                    <MenuItem value="en" onClick={() => router.push(`/cz/app/settings`)}>
+                    <MenuItem value="en" onClick={() => router.push(`/cz/settings`)}>
                         {t('czech')}
                     </MenuItem>
-                    <MenuItem value="cz" onClick={() => router.push(`/en/app/settings`)}>
+                    <MenuItem value="cz" onClick={() => router.push(`/en/settings`)}>
                         {t('english')}
                     </MenuItem>
                 </MenuContent>

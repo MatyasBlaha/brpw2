@@ -9,23 +9,32 @@ import {Field} from "@/components/ui/field";
 import BackButton from "@/components/ui/BackButton";
 import {useMutation} from "@tanstack/react-query";
 import {apiRequest} from "@/lib/api/apiClient";
+import {useAuth} from "@/hooks/useAuth";
+import {useLocale} from "@/context/LocaleContext";
+import {useRouter} from "next/navigation";
 
-const page = () => {
+export default function NewOwner () {
     const {register, handleSubmit, formState: {isSubmitting}} = useForm<addOwner>()
     const t = useTranslations("forms.addOwner")
+    const {user} = useAuth();
+    const locale = useLocale();
+    const router = useRouter()
 
     const mutation = useMutation({
         mutationFn: (data: addOwner) => apiRequest("/api/owner/createOwner", "POST", data),
         onSuccess: (data: addOwner) => {
-            alert(`Owner ${data.name} was added`)
-    },
+            router.push(`/${locale}/owner/${data.id}`)
+        },
         onError: (error) => {
             console.error(error)
         }
     })
 
     const onSubmit: SubmitHandler<addOwner> = (data) => {
-        mutation.mutate(data);
+        mutation.mutate({
+            ...data,
+            userId: user?.userId
+        });
     }
 
     return (
@@ -60,5 +69,3 @@ const page = () => {
         </>
     );
 };
-
-export default page;

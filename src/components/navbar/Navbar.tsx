@@ -49,7 +49,7 @@ export default function Navbar() {
                     ) : user ? (
                         <Flex>
                             <Box>
-                                <Link href={`/${locale}/app`} className="mr-4">
+                                <Link href={`/${locale}/owner`} className="mr-4">
                                     <Button>můj účet</Button>
                                 </Link>
                                 <MenuRoot>
@@ -60,12 +60,12 @@ export default function Navbar() {
                                     </MenuTrigger>
                                     <MenuContent position="absolute">
                                         <MenuItem value="profile">
-                                            <Link href={`/${locale}/app/profile`}>
+                                            <Link href={`/${locale}/profile`}>
                                                 {t("links.profile")}
                                             </Link>
                                         </MenuItem>
                                         <MenuItem value="settings">
-                                            <Link href={`/${locale}/app/settings`}>
+                                            <Link href={`/${locale}/settings`}>
                                                 {t("links.settings")}
                                             </Link>
                                         </MenuItem>

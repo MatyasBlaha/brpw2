@@ -19,7 +19,7 @@ export default function AuthForm({params: {locale}}: { params: { locale: string 
         mutationFn: (data: Login) => apiRequest(`/api/auth/${endpoint}`, "POST", data),
         onSuccess: ({token}) => {
             document.cookie = `token=${token}; path=/`;
-            router.push(`/${locale}/app`);
+            router.push(`/${locale}/owner`);
         },
         onError: (error) => {
             console.error(error);

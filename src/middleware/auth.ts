@@ -20,5 +20,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: '/:locale/app/:path*'
+    matcher: '/:locale/owner/:path*'
 };
