@@ -6,6 +6,7 @@ import {useForm, SubmitHandler} from 'react-hook-form';
 import {useMutation} from "@tanstack/react-query";
 import {apiRequest} from "@/lib/api/apiClient";
 import {Login} from "@/types/auth/login";
+import { log } from 'console';
 
 export default function AuthForm({params: {locale}}: { params: { locale: string } }) {
     const router = useRouter();
@@ -30,7 +31,8 @@ export default function AuthForm({params: {locale}}: { params: { locale: string 
         mutation.mutate(data);
     }
 
-    console.log("adasdasd")
+    console.log("test")
+    console.log("test2")
 
     return (
         <div className="auth-container">
