@@ -30,6 +30,8 @@ export default function AuthForm({params: {locale}}: { params: { locale: string 
         mutation.mutate(data);
     }
 
+    console.log("adasdasd")
+
     return (
         <div className="auth-container">
             <h1>{isLogin ? 'Login' : 'Register'}</h1>
